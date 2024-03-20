@@ -7,7 +7,7 @@ const App = () => {
     <div className="app-layout">
       <h1>Semantic UI</h1>
       <h2>Demo Form</h2>
-      <MyForm />
+      <MyForm className="my-form" />
     </div>
   );
 };
