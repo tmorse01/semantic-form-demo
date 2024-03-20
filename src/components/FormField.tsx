@@ -6,6 +6,7 @@ import {
   Checkbox,
   Select,
   FormFieldProps as SemanticFormFieldProps,
+  Message,
 } from "semantic-ui-react";
 
 // Define the types for the specific properties our form fields will accept
@@ -19,13 +20,19 @@ interface FieldProps extends SemanticFormFieldProps {
 interface CustomFormFieldProps {
   field: FieldProps;
   value: any;
+  formValues: Record<string, any>;
+  error: string | boolean | undefined;
   onChange: (id: string, value: any) => void;
+  isHidden: (field: FieldProps, value: any) => boolean;
 }
 
 const CustomFormField: React.FC<CustomFormFieldProps> = ({
   field,
   value,
+  formValues,
+  error,
   onChange,
+  isHidden,
   ...props
 }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, data: any) => {
@@ -68,16 +75,12 @@ const CustomFormField: React.FC<CustomFormFieldProps> = ({
   return (
     <Form.Field
       id={field.id}
-      label={field.label}
-      error={
-        field.error
-          ? typeof field.error === "boolean"
-            ? undefined
-            : { content: field.error }
-          : undefined
-      }
+      error={error ? error : false}
+      hidden={field.isHidden ? !field.isHidden(formValues) : false}
     >
+      <label htmlFor={field.id}>{field.label}</label>
       {renderField()}
+      {error && <Message color="red">{error}</Message>}
     </Form.Field>
   );
 };

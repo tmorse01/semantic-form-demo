@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { Form, Button, Input, Checkbox, Message } from "semantic-ui-react";
+import CustomFormField from "./FormField";
 
 interface FormField {
   id: string;
   label: string;
   type: string;
   rules?: { required?: boolean; pattern?: RegExp; message?: string };
-  shouldDisplay?: (formValues: Record<string, any>) => boolean;
+  isHidden?: (formValues: Record<string, any>) => boolean;
 }
 
 const MyForm = ({ className }: { className: string }) => {
@@ -47,7 +48,7 @@ const MyForm = ({ className }: { className: string }) => {
       label: "Confirm Password",
       type: "password",
       rules: { required: true, message: "Please confirm your password" },
-      shouldDisplay: (formValues) => formValues["password"],
+      isHidden: (formValues) => formValues["password"],
     },
     {
       id: "phoneNumber",
@@ -69,20 +70,20 @@ const MyForm = ({ className }: { className: string }) => {
       id: "subscription",
       label: "Subscribe to newsletter",
       type: "checkbox",
-      shouldDisplay: (formValues) => formValues["email"],
+      isHidden: (formValues) => formValues["email"],
     },
     // Fields dependent on subscription status
     {
       id: "frequency",
       label: "Newsletter frequency",
       type: "text",
-      shouldDisplay: (formValues) => formValues["subscription"],
+      isHidden: (formValues) => formValues["subscription"],
     },
     {
       id: "interests",
       label: "Interests (comma-separated)",
       type: "text",
-      shouldDisplay: (formValues) => formValues["subscription"],
+      isHidden: (formValues) => formValues["subscription"],
     },
   ];
 
@@ -120,31 +121,14 @@ const MyForm = ({ className }: { className: string }) => {
   return (
     <Form className={className} onSubmit={handleSubmit}>
       {fields.map((field) => (
-        <Form.Field
+        <CustomFormField
           key={field.id}
-          hidden={
-            field.shouldDisplay ? !field.shouldDisplay(formValues) : false
-          }
-        >
-          <label>{field.label}</label>
-          {field.type !== "checkbox" ? (
-            <Input
-              type={field.type}
-              value={formValues[field.id] || ""}
-              onChange={(_, data) => handleChange(field.id, data.value)}
-              error={formErrors[field.id] ? true : undefined}
-            />
-          ) : (
-            <Checkbox
-              label={field.label}
-              checked={!!formValues[field.id]}
-              onChange={(_, data) => handleChange(field.id, data.checked)}
-            />
-          )}
-          {formErrors[field.id] && (
-            <Message color="red">{formErrors[field.id]}</Message>
-          )}
-        </Form.Field>
+          field={field}
+          value={formValues[field.id]}
+          onChange={handleChange}
+          error={formErrors[field.id]}
+          formValues={formValues}
+        />
       ))}
       <Button type="submit">Submit</Button>
     </Form>
