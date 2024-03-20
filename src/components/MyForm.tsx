@@ -10,7 +10,7 @@ interface FormField {
   shouldDisplay?: (formValues: Record<string, any>) => boolean;
 }
 
-const MyForm = () => {
+const MyForm = ({ className }: { className: string }) => {
   const [formValues, setFormValues] = useState<Record<string, any>>({});
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
@@ -118,7 +118,7 @@ const MyForm = () => {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form className={className} onSubmit={handleSubmit}>
       {fields.map((field) => (
         <Form.Field
           key={field.id}
