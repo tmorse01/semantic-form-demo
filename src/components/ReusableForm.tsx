@@ -12,28 +12,56 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
   children,
   formControl,
 }) => {
-  const formMethods = useForm(initialValues);
+  const {
+    values,
+    errors,
+    handleChange,
+    setFieldValue,
+    resetForm,
+    handleSubmit,
+  } = useForm({
+    initialValues,
+    fields,
+  });
 
   useEffect(() => {
     // If formControl (a ref) is provided, assign formMethods to its current value
     if (formControl) {
-      formControl.current = formMethods;
+      formControl.current = {
+        values,
+        errors,
+        handleChange,
+        setFieldValue,
+        resetForm,
+        handleSubmit,
+      };
     }
-  }, [formMethods, formControl]);
+  }, [
+    values,
+    errors,
+    handleChange,
+    setFieldValue,
+    resetForm,
+    handleSubmit,
+    formControl,
+  ]);
 
   return (
-    <Form onSubmit={formMethods.handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       {fields.map((field) => (
         <ReusableFormField
           key={field.name}
           field={field}
-          value={formMethods.values[field.name]}
-          handleChange={formMethods.handleChange}
+          value={values[field.name]}
+          error={errors[field.name]}
+          handleChange={handleChange}
         />
       ))}
       {/* Add custom form components or other children here */}
       {children}
-      <Button type="submit">Submit</Button>
+      <Button primary type="submit">
+        Submit
+      </Button>
     </Form>
   );
 };

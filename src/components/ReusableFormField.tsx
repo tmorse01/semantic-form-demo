@@ -6,8 +6,9 @@ import { FormField as IFormField } from "../types";
 const ReusableFormField: React.FC<{
   field: IFormField;
   value: any;
+  error?: string;
   handleChange: (event: React.ChangeEvent<HTMLInputElement>, data: any) => void;
-}> = ({ field, value, handleChange }) => {
+}> = ({ field, value, error, handleChange }) => {
   const renderField = () => {
     switch (field.type) {
       case "text":
@@ -33,7 +34,12 @@ const ReusableFormField: React.FC<{
     }
   };
 
-  return renderField();
+  return (
+    <Form.Field error={!!error}>
+      {renderField()}
+      {error && <div style={{ color: "red" }}>{error}</div>}
+    </Form.Field>
+  );
 };
 
 export default ReusableFormField;
