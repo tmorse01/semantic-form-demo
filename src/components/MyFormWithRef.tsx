@@ -35,7 +35,6 @@ const MyFormWithRef: React.FC = () => {
   };
 
   const updateFormValue = () => {
-    console.log(formControlRef.current);
     if (formControlRef.current) {
       const randomUsername = Math.random().toString(36).substring(7);
       const randomEmail = `${randomUsername}@example.com`;

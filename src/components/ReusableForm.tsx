@@ -17,6 +17,7 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
     errors,
     handleChange,
     setFieldValue,
+    setFormValues,
     resetForm,
     handleSubmit,
   } = useForm({
@@ -32,6 +33,7 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
         errors,
         handleChange,
         setFieldValue,
+        setFormValues,
         resetForm,
         handleSubmit,
       };
@@ -41,6 +43,7 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
     errors,
     handleChange,
     setFieldValue,
+    setFormValues,
     resetForm,
     handleSubmit,
     formControl,

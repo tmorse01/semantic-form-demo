@@ -31,18 +31,13 @@ const MyAddressForm: React.FC = () => {
     { name: "mailingZip", label: "ZIP Code", type: "text" },
   ];
 
-  const { values, errors, handleChange, handleSubmit, setFormValues } = useForm({
-    initialValues,
-    fields: addressFields,
-  });
-
   const onSubmit = (values: FormValues) => {
     console.log(values); // Process form values here
   };
 
   const handleSameAddressChange = (e: React.FormEvent, data: any) => {
-    setSameAsPhysical(data.checked);
-    console.log("handleSameAddressChange", data.checked);
+    setSameAsPhysical(data.checked)
+    const values = formControlRef.current?.values ?? {};
     if (data.checked) {
       // Copy physical address fields to mailing address fields
       const newValues = {
@@ -52,24 +47,26 @@ const MyAddressForm: React.FC = () => {
         mailingState: values.physicalState,
         mailingZip: values.physicalZip,
       };
-      setFormValues(newValues);
+      formControlRef.current?.setFormValues(newValues);
+    } else {
+      const newValues = {
+        ...values,
+        mailingAddress: "",
+        mailingCity: "",
+        mailingState: "",
+        mailingZip: "",
+      };
+      formControlRef.current?.setFormValues(newValues);
     }
   };
 
   return (
     <ReusableForm
       formControl={formControlRef}
-      onSubmit={() => handleSubmit(onSubmit)}
+      fields={addressFields}
+      onSubmit={() => formControlRef.current?.handleSubmit(onSubmit)}
       initialValues={initialValues}
     >
-      {addressFields.map((field) => (
-        <ReusableFormField
-          field={field}
-          value={values[field.name]}
-          error={errors[field.name]}
-          handleChange={handleChange}
-        />
-      ))}
       <Form.Field>
         <Checkbox
           label="My mailing address is the same as my physical address"
