@@ -13,7 +13,7 @@ export interface FormValues {
 
 export interface ReusableFormProps {
   onSubmit: (values: FormValues) => void;
-  fields: FormField[];
+  fields?: FormField[];
   initialValues: FormValues;
   children?: React.ReactNode;
   formControl?: React.RefObject<FormControls>;
@@ -21,6 +21,7 @@ export interface ReusableFormProps {
 
 export interface FormControls {
   values: FormValues;
+  handleChange: (event: React.ChangeEvent<HTMLInputElement>, { name, value }: any) => void;
   setFieldValue: (name: string, value: any) => void;
   setFormValues: (newValues: FormValues) => void;
   resetForm: (newValues?: FormValues) => void;

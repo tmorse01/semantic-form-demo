@@ -51,7 +51,7 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      {fields.map((field) => (
+      {fields?.map((field) => (
         <ReusableFormField
           key={field.name}
           field={field}

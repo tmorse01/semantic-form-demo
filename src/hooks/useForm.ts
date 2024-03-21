@@ -3,7 +3,7 @@ import { FormValues, FormField } from "../types";
 
 interface UseFormParams {
   initialValues: FormValues;
-  fields: FormField[]; // Add this to perform validation based on fields
+  fields?: FormField[]; // Add this to perform validation based on fields
 }
 
 const useForm = ({ initialValues, fields }: UseFormParams) => {
@@ -11,7 +11,7 @@ const useForm = ({ initialValues, fields }: UseFormParams) => {
   const [errors, setErrors] = useState<FormValues>({});
 
   const validateField = (name: string, value: any): string | undefined => {
-    const field = fields.find((f) => f.name === name);
+    const field = fields?.find((f) => f.name === name);
     return field && field.validate ? field.validate(value, values) : undefined;
   };
 
@@ -19,7 +19,7 @@ const useForm = ({ initialValues, fields }: UseFormParams) => {
     const newErrors: FormValues = {};
     let isValid = true;
 
-    fields.forEach((field) => {
+    fields?.forEach((field) => {
       const error = validateField(field.name, values[field.name]);
       if (error) {
         isValid = false;
@@ -33,8 +33,10 @@ const useForm = ({ initialValues, fields }: UseFormParams) => {
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement>,
-    { name, value }: any
+    data: any
   ) => {
+    const { name, value } = data;
+    // console.log("useForm handleChange: ", event, name, value)
     setValues((prevValues) => ({ ...prevValues, [name]: value }));
     // Optionally validate on change
     if (errors[name]) {
