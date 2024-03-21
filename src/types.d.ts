@@ -4,7 +4,7 @@ export interface FormField {
   label: string;
   type?: string;
   options?: { key: string; text: string; value: any }[];
-  validate?: (value: any) => string | undefined; // Returns an error message if validation fails, otherwise undefined
+  validate?: (value: any, formValues: FormValues) => string | undefined; // Returns an error message if validation fails, otherwise undefined
 }
 export interface FormValues {
   [key: string]: any;

@@ -13,7 +13,7 @@ const useForm = ({ initialValues, fields }: UseFormParams) => {
 
   const validateField = (name: string, value: any): string | undefined => {
     const field = fields.find((f) => f.name === name);
-    return field && field.validate ? field.validate(value) : undefined;
+    return field && field.validate ? field.validate(value, values) : undefined;
   };
 
   const validateForm = (): boolean => {
@@ -57,7 +57,6 @@ const useForm = ({ initialValues, fields }: UseFormParams) => {
 
   const handleSubmit =
     (callback: (values: FormValues) => void) => (event?: React.FormEvent) => {
-      console.log("Submitting form", values);
       event?.preventDefault();
       if (validateForm()) {
         callback(values);
