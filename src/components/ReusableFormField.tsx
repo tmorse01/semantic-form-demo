@@ -9,28 +9,39 @@ const ReusableFormField: React.FC<{
   error?: string;
   handleChange: (event: React.ChangeEvent<HTMLInputElement>, data: any) => void;
 }> = ({ field, value, error, handleChange }) => {
+
+  function onChange(event: React.ChangeEvent<HTMLInputElement>, data: any) {
+    handleChange(event, data)
+    if (field.onChange){
+      field.onChange(event, data);
+    }
+  }
+
   const renderField = () => {
     switch (field.type) {
       case "text":
       case "email":
       case "password":
-        return <Form.Input {...field} value={value} onChange={handleChange} />;
+        return <Form.Input {...field} value={value} onChange={onChange} />;
       case "select":
         return (
           <Form.Select
             {...field}
             options={field.options}
             value={value}
-            onChange={handleChange}
+            onChange={onChange}
           />
         );
       case "textarea":
         return (
-          <Form.TextArea {...field} value={value} onChange={handleChange} />
+          <Form.TextArea {...field} value={value} onChange={onChange} />
         );
-      // Add more cases for other types
+      case "checkbox":
+        return (
+          <Form.Checkbox {...field} checked={value} onChange={onChange} />
+        )
       default:
-        return <Form.Input {...field} value={value} onChange={handleChange} />;
+        return <Form.Input {...field} value={value} onChange={onChange} />;
     }
   };
 

@@ -5,6 +5,7 @@ export interface FormField {
   type?: string;
   options?: { key: string; text: string; value: any }[];
   validate?: (value: any, formValues: FormValues) => string | undefined; // Returns an error message if validation fails, otherwise undefined
+  onChange?: (e: React.FormEvent, data: any) => void;
 }
 export interface FormValues {
   [key: string]: any;
