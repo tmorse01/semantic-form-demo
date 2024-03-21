@@ -1,4 +1,3 @@
-// useForm.ts
 import { useState } from "react";
 import { FormValues, FormField } from "../types";
 
@@ -50,6 +49,10 @@ const useForm = ({ initialValues, fields }: UseFormParams) => {
     setValues((prevValues) => ({ ...prevValues, [name]: value }));
   };
 
+  const setFormValues = (newValues: FormValues) => {
+    setValues((prevValues) => ({ ...prevValues, ...newValues }));
+  };
+
   const resetForm = (newValues = initialValues) => {
     setValues(newValues);
     setErrors({});
@@ -68,6 +71,7 @@ const useForm = ({ initialValues, fields }: UseFormParams) => {
     errors,
     handleChange,
     setFieldValue,
+    setFormValues,
     resetForm,
     handleSubmit,
   };

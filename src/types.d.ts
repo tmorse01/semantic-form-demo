@@ -21,6 +21,7 @@ export interface ReusableFormProps {
 export interface FormControls {
   values: FormValues;
   setFieldValue: (name: string, value: any) => void;
+  setFormValues: (newValues: FormValues) => void;
   resetForm: (newValues?: FormValues) => void;
   handleSubmit: (
     callback: (values: FormValues) => void
